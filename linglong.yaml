@@ -1,29 +1,38 @@
 package:
-  id: dtkcore
-  name: dtkcore
+  id: "dde-dock"
+  name: "dde-dock"
+  version: 5.5.15
   kind: lib
-  version: 6.0.9.2
   description: |
-    dtkcore
+    dde dock for deepin.
 
-base:
-  id: org.deepin.base/23.0.0
+runtime:
+  id: org.deepin.Runtime
+  version: 23.0.0
 
 depends:
-  - id: qtbase/5.15.7
-  - id: dtkcommon/5.6.0.1
-  - id: gsettings-qt/0.3.1.1
+  - id: "dde-qt-dbus-factory"
+    version: 5.5.12
+  - id: "dde-control-center"
+    version: 5.5.23
+  - id: "libdbusmenu-qt"
+    version: 0.9.3
+  - id: googletest
+    version: 1.8.1
 
 source:
   kind: git
   url: https://github.com/linuxdeepin/dde-dock.git
   commit: 6.0.9.2
 
-variables:
-  extra_args: |
-    -DBUILD_EXAMPLES=OFF \
-    -DBUILD_DOCS=OFF \
-    -DVERSION=${VERSION}
-
 build:
-  kind: cmake
+  kind: manual
+  manual:
+    configure: |
+      #exec bash
+      mkdir build
+      cd build
+      cmake -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+            -DCMAKE_INSTALL_LIBDIR=${PREFIX}/lib ..
+      make -j6
+      make -j install
